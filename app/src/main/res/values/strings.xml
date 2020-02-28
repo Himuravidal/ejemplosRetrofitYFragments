@@ -2,5 +2,6 @@
     <string name="app_name">OtroDesafio</string>
     <string name="question">Esta es la pregunta:</string>
     <string name="pregunta">Pregunta</string>
+    <string name="hello_blank_fragment">Este es el segundo Fragmento</string>
 
 </resources>

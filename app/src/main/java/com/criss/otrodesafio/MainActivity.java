@@ -17,14 +17,13 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView pregunta, categoria, dificultad;
+    private String primeraCosa, segundaCosa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // Inicializo las vistas
-        initializeViews();
+
 
         //Retrofit
         Api api = RetrofitClient.getRetrofit().create(Api.class);
@@ -33,31 +32,35 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<RespuestaApi>() {
             @Override
             public void onResponse(Call<RespuestaApi> call, Response<RespuestaApi> response) {
-
-
-                categoria.setText(response.body().getResults().get(0).getQuestion());
-                pregunta.setText(response.body().getResults().get(0).getCategory());
-
-
+                primeraCosa= response.body().getResults().get(0).getQuestion();
+                segundaCosa= response.body().getResults().get(0).getCategory();
+                initializeFragment(primeraCosa,segundaCosa);
             }
 
             @Override
             public void onFailure(Call<RespuestaApi> call, Throwable t) {
-
                 Log.e("ERRORES", t.toString());
-
                 Toast.makeText(MainActivity.this, "Algo fallo, intentelo despues", Toast.LENGTH_SHORT).show();
             }
         });
 
+
     }
 
 
-    private void initializeViews() {
-        pregunta = findViewById(R.id.questions);
-        categoria = findViewById(R.id.categoria);
-        dificultad = findViewById(R.id.dificultad);
+    //Este método inicializa y añade un fragmento
+    private void initializeFragment(String cosa1, String cosa2) {
+        Log.e("ERROR", "SI_PASA");
+        FirstFragment firstFragment = FirstFragment.newInstance(cosa1, cosa2);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frameLayout, firstFragment, "FIRSTFRAGMENT")
+                .commit();
     }
+
+
+
+
 
 
 
